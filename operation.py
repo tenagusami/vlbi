@@ -11,10 +11,10 @@ def get_command_output(command):
     with pa.SSHClient() as ssh:
         ssh.set_missing_host_key_policy(pa.AutoAddPolicy())
         ssh.connect(
-            hostname=host_setting['IP address'],
+            hostname=host_setting.ip_address,
             port=22,
-            username=host_setting['username'],
-            password=host_setting['password'])
+            username=host_setting.username,
+            password=host_setting.password)
         stdin, stdout, stderr = ssh.exec_command(command)
         return [f.split("\n")[0] for f in stdout]
 
