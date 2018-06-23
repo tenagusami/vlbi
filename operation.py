@@ -1,5 +1,5 @@
 import paramiko as pa
-import my_settings as my
+import my_settings.settings as my
 
 
 def ssh_setting():
@@ -25,16 +25,17 @@ def get_files(remote_dir, local_dir,
     with pa.SSHClient() as ssh:
         ssh.set_missing_host_key_policy(pa.AutoAddPolicy())
         ssh.connect(
-            hostname=host_setting['IP address'],
+            hostname=host_setting.ip_address,
             port=22,
-            username=host_setting['username'],
-            password=host_setting['password'])
+            username=host_setting.username,
+            password=host_setting.password)
         with ssh.open_sftp() as sftp:
             try:
                 sftp.chdir(remote_dir)
             except IOError:
                 raise RuntimeError(
-                    'the specified directory ' + remote_dir + 'does not exist.')
+                    'the specified directory '
+                    + remote_dir + 'does not exist.')
             remote_file_names \
                 = [file_name for file_name in sftp.listdir()
                    if path_predicate(file_name)]
